@@ -218,7 +218,6 @@ public class AudioRecognizer {
     				maxCount=matchMap.get(nombreCancion).get(i);
     				maxSong=nombreCancion;
     			}
-				
 			}
     	}
             // (For each song) Iterate over the nested hashtable Map<offset,count>
