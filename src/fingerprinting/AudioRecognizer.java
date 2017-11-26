@@ -3,6 +3,7 @@ package fingerprinting;
 import serialization.Serialization;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -107,7 +108,8 @@ public class AudioRecognizer {
         for (int c = 0; c < magnitudeSpectrum.length; c++) { 
             // Compute the hash entry for the current chunk/ventana (magnitudeSpectrum[c])
             // ...
-            // ...            
+            // ...           
+        	long longHash= computeHashEntry(magnitudeSpectrum[c]);
             // In the case of adding the song to the repository
             if (!isMatching) { 
                 // Adding keypoint to the list in its relative hash entry which has been computed before
@@ -115,6 +117,15 @@ public class AudioRecognizer {
                 // ...
                 // ...
                 // ...
+                List <KeyPoint> keyPointadd=hashMapSongRepository.get(longHash);
+                if(keyPointadd==null) {
+                	keyPointadd=new ArrayList <KeyPoint> ();
+                	keyPointadd.add(point);
+                	hashMapSongRepository.put(longHash,keyPointadd);
+                }else {
+                	keyPointadd.add(point);
+                	hashMapSongRepository.put(longHash,keyPointadd);
+                }
             }
             // In the case of matching a song fragment
             else {
@@ -131,6 +142,29 @@ public class AudioRecognizer {
                                     // ...
                                 // (else) 
                                     // ...
+            	//obtenemos la lista de canciones para un determinado longHash
+            	List <KeyPoint> keyPointlista=hashMapSongRepository.get(longHash);
+            	if(keyPointlista != null) {
+            		KeyPoint aux;
+            		int offset;
+            		for (int i = 0; i < keyPointlista.size(); i++) {
+            			aux = keyPointlista.get(i);
+            			offset=Math.abs(aux.getTimestamp() - c);
+            			if(matchMap.containsKey(aux.getSongId())) {
+            				
+            				if(matchMap.get(aux.getSongId()).containsKey(offset)){
+            					int countOffset=matchMap.get(aux.getSongId()).get(offset)+1;
+            					matchMap.get(aux.getSongId()).put(offset, countOffset);
+            				}else {
+            					matchMap.get(aux.getSongId()).put(offset, 1);
+            				}
+            			}else {
+            				Map<Integer,Integer> auxMap=new HashMap<Integer,Integer>();
+            				auxMap.put(offset, 1);
+            				matchMap.put(aux.getSongId(), auxMap);
+            			}
+					}
+            	}
             }            
         } // End iterating over the chunks/ventanas of the magnitude spectrum
         // If we chose matching, we 
