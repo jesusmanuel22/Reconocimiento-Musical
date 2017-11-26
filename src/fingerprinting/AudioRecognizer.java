@@ -210,6 +210,17 @@ public class AudioRecognizer {
     private void showBestMatching(Map<String, Map<Integer,Integer>> matchMap) {
         // Iterate over the songs in the hashtable used for matching (matchMap)
         // ...
+    	int maxCount=0;
+    	String maxSong=null;
+    	for(String nombreCancion : matchMap.keySet()) {
+    		for (Integer i : matchMap.get(nombreCancion).keySet()) {
+    			if(maxCount<matchMap.get(nombreCancion).get(i)) {
+    				maxCount=matchMap.get(nombreCancion).get(i);
+    				maxSong=nombreCancion;
+    			}
+				
+			}
+    	}
             // (For each song) Iterate over the nested hashtable Map<offset,count>
             // Get the biggest offset for the current song and update (if necessary)
             // the best overall result found till the current iteration
