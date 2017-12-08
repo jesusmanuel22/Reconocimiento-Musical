@@ -208,17 +208,22 @@ public class AudioRecognizer {
     
     // Method to find the songId with the most frequently/repeated time offset
     private void showBestMatching(Map<String, Map<Integer,Integer>> matchMap) {
-        // Iterate over the songs in the hashtable used for matching (matchMap)
+    	// Iterate over the songs in the hashtable used for matching (matchMap)
         // ...
     	int maxCount=0;
     	String maxSong=null;
     	for(String nombreCancion : matchMap.keySet()) {
+    		System.out.println("ID Canción: "+nombreCancion);
     		for (Integer i : matchMap.get(nombreCancion).keySet()) {
     			if(maxCount<matchMap.get(nombreCancion).get(i)) {
     				maxCount=matchMap.get(nombreCancion).get(i);
     				maxSong=nombreCancion;
     			}
+
+				System.out.println("Offset: "+i+ ", count: "+matchMap.get(nombreCancion).get(i));
+    			
 			}
+    		
     	}
             // (For each song) Iterate over the nested hashtable Map<offset,count>
             // Get the biggest offset for the current song and update (if necessary)

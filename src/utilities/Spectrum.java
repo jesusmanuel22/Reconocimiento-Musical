@@ -24,11 +24,17 @@ public class Spectrum {
                 for (int i = 0; i < chunks; i++) {                    
                     // Put the time domain data contained in the current chunk into 
                     // a complex number (complex) with 0 as imaginary part
+                	
                     Complex[] complex = new Complex[AudioParams.chunkSize];
+                    //rellenamos complex de números complejos 
+                    for (int j = 0; j < AudioParams.chunkSize ; j++) {
+						complex[j]=new Complex(audioTimeDomain[i*AudioParams.chunkSize+j],0);
+					}
                     // ...                                
                     // Perform the FFT for the current chunk (FFT.fft(complex))
                     // and save the results into resultsComplex[i]                    
                     // ... 
+                    resultsComplex[i]= FFT.fft(complex);
                     // Initialize to avoid NullPointerExceptions
                     resultsMag[i]= new double[AudioParams.chunkSize];                       
                     // Save into resultsMag[i] the log magnitude for each frequency 
